@@ -7,4 +7,9 @@
 #ifndef CANSAT_BMP280_H
 #define CANSAT_BMP280_H
 
+#include "atmosphere.h"
+
+void BMP280_init();
+atmosphere*BMP280_read();
+
 #endif //CANSAT_BMP280_H

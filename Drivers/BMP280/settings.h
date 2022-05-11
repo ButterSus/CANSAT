@@ -23,4 +23,6 @@ SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0)|(1<<CPHA)|(1<<CPOL)
 
 #define REG_CTRL_MEAS_VALUE 0xDB
 
+#define READ_SIGNAL 0xff
+
 #endif //CANSAT_BMP280_SETTINGS_H
