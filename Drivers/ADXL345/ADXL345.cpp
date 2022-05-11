@@ -18,8 +18,8 @@ acceleration ADXL345_acceleration;
 
 void ADXL345_init(){
     MODE_SPI;
-    send<&CS_PORT, 1<<CS_NUM>(0, WRITE_MODE(REG_DATA_FORMAT));
-    send<&CS_PORT, 1<<CS_NUM>((uint8_t)0x08, (uint8_t)WRITE_MODE(REG_POWER_CTL));
+    send<&CS_PORT, 1<<CS_NUM>(REG_DATA_FORMAT_VALUE, WRITE_MODE(REG_DATA_FORMAT));
+    send<&CS_PORT, 1<<CS_NUM>(REG_POWER_CTL_VALUE, WRITE_MODE(REG_POWER_CTL));
 }
 
 /**

@@ -4,9 +4,23 @@
  * @name settings for BMP280
  */
 
-#ifndef CANSAT_SETTINGS_H
-#define CANSAT_SETTINGS_H
+#ifndef CANSAT_BMP280_SETTINGS_H
+#define CANSAT_BMP280_SETTINGS_H
 
-#define REG_CTRL_MEAS
+#include "avr/io.h"
 
-#endif //CANSAT_SETTINGS_H
+/*! USER INTERFACE */
+
+#define CS_PORT lpPORTB
+#define CS_NUM 5
+
+/*! CONFIG */
+
+#define MODE_SPI \
+SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0)|(1<<CPHA)|(1<<CPOL)
+
+#define REG_CTRL_MEAS 0xF4
+
+#define REG_CTRL_MEAS_VALUE 0xDB
+
+#endif //CANSAT_BMP280_SETTINGS_H
