@@ -30,11 +30,19 @@ void portMap(){
     DDRB |=  (1<<PB5); /*! 13 - BMP280        */
     DDRB |=  (1<<PB6); /*! 14 - NRF24L01 CE   */ /*! RADIO    */
     DDRB |=  (1<<PB7); /*! 15 - NRF24L01 CSN  */ /*! NRF24L01 */
+
+    PORTB &= ~(1<<PB5); // disabling BMP280 CS for SPI detecting
+    _delay_ms(5);
+    PORTB |= (1<<PB4);  // enabling ADXL345 CS
+    PORTB |= (1<<PB5);  // enabling BMP280 CS
+    PORTB &= ~(1<<PB6); // disabling NRF24L01 CE
+    PORTB |= (1<<PB7);
 }
 
 void setup(){
     portMap();
     UART_init();
-    ADXL345_init();
+    //ADXL345_init();
+    //NRF24L01_init();
     BMP280_init();
 }

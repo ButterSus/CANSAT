@@ -12,7 +12,12 @@
 
 #include "SPI.h"
 
+char format[32];
+
 void update(){
-    printf("%i\n", (int16_t)(BMP280_read()->temperature));
-    _delay_ms(1000);
+    printf("%f\n", (BMP280_read()->temperature));
+   // acceleration*result = ADXL345_read();
+   // sprintf(format, "F6 3 3 1 1 1 1 %i %i %i\r\n", result->X, result->Y, result->Z);
+   // NRF24L01_send(format);
+    _delay_ms(100);
 }

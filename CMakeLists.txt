@@ -14,7 +14,8 @@ SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
 SET(override CFLAGS = -g -DF_CPU=$(HZ) -Wall -O2 -mmcu=$(MCU_TARGET) $(DEFS))
-SET(override LDFLAGS= -Wl,-u,vfprintf,-Map,$(P).map)
+SET(override LDFLAGS= -Map,$(P).map)
+SET(CMAKE_EXE_LINKER_FLAGS -Wl,-u,vfprintf)
 SET(OBJCOPY     = avr-objcopy)
 SET(OBJDUMP     = avr-objdump)
 
