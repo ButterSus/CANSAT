@@ -10,6 +10,9 @@
 #include "ADXL345.h"
 #include "BMP280.h"
 
+#include "SPI.h"
+
 void update(){
-    printf("%d", (int16_t)(100 * BMP280_read()->temperature));
+    printf("%i\n", (int16_t)(BMP280_read()->temperature));
+    _delay_ms(1000);
 }

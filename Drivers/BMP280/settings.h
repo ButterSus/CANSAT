@@ -17,7 +17,7 @@
 /*! CONFIG */
 
 #define MODE_SPI \
-SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0)|(1<<CPHA)|(1<<CPOL)
+SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0)
 
 #define REG_CTRL_MEAS 0xF4
 
