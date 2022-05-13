@@ -15,9 +15,10 @@
 char format[32];
 
 void update(){
-    printf("%f\n", (BMP280_read()->temperature));
+    atmosphere*result = BMP280_read();
+    printf("T: %f \tP: %f\n", result->temperature, result->pressure);
    // acceleration*result = ADXL345_read();
    // sprintf(format, "F6 3 3 1 1 1 1 %i %i %i\r\n", result->X, result->Y, result->Z);
    // NRF24L01_send(format);
-    _delay_ms(100);
+    _delay_ms(200);
 }

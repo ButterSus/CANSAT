@@ -24,14 +24,14 @@ SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0)|(1<<CPHA)|(1<<CPOL)
 #define REG_DIG_T2 0x8A
 #define REG_DIG_T3 0x8C
 #define REG_DIG_P1 0x8E
-#define REG_DIG_P2 0x91
-#define REG_DIG_P3 0x93
-#define REG_DIG_P4 0x95
-#define REG_DIG_P5 0x97
-#define REG_DIG_P6 0x99
-#define REG_DIG_P7 0x9B
-#define REG_DIG_P8 0x9D
-#define REG_DIG_P9 0x9F
+#define REG_DIG_P2 0x90
+#define REG_DIG_P3 0x92
+#define REG_DIG_P4 0x94
+#define REG_DIG_P5 0x96
+#define REG_DIG_P6 0x98
+#define REG_DIG_P7 0x9A
+#define REG_DIG_P8 0x9C
+#define REG_DIG_P9 0x9E
 #define REG_ADC 0xF7
 #define REG_CONFIG 0xF5
 
