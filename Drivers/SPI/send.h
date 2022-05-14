@@ -4,7 +4,7 @@
 /**
  * @author ButterSus
  * @date 06.05.2022
- * @name send
+ * @name SPI_send
  */
 
 #include <stdint.h>
@@ -27,26 +27,26 @@ static volatile uint8_t * lpPORTG = &PORTG;
 
 /**
  * @def
- * send DATA
+ * SPI_send DATA
  * @param DATA \n
  * byte value
  */
 
-static void send(uint8_t DATA){
+static void SPI_send(uint8_t DATA){
     SPDR = DATA;
     while(!(SPSR & (1<<SPIF)));
 }
 
 /**
  * @def
- * send DATA with ADRESS
+ * SPI_send DATA with ADRESS
  * @param DATA \n
  * byte value
  * @param ADDRESS \n
  * byte value
  */
 
-static void send(uint8_t DATA, uint8_t ADDRESS){
+static void SPI_send(uint8_t DATA, uint8_t ADDRESS){
     SPDR = ADDRESS;
     while(!(SPSR & (1<<SPIF)));
     SPDR = DATA;
@@ -55,12 +55,12 @@ static void send(uint8_t DATA, uint8_t ADDRESS){
 
 /**
  * @def
- * send DATA and return uint8_t
+ * SPI_send DATA and return uint8_t
  * @param DATA \n
  * byte value
  */
 
-static uint8_t sendR(uint8_t DATA){
+static uint8_t SPI_sendR(uint8_t DATA){
     SPDR = DATA;
     while(!(SPSR & (1<<SPIF)));
     return SPDR;
@@ -68,14 +68,14 @@ static uint8_t sendR(uint8_t DATA){
 
 /**
  * @def
- * send DATA with ADDRESS and return uint8_t
+ * SPI_send DATA with ADDRESS and return uint8_t
  * @param DATA \n
  * byte value
  * @param ADDRESS \n
  * byte value
  */
 
-static uint8_t sendR(uint8_t DATA, uint8_t ADDRESS){
+static uint8_t SPI_sendR(uint8_t DATA, uint8_t ADDRESS){
     SPDR = ADDRESS;
     while(!(SPSR & (1<<SPIF)));
     SPDR = DATA;
@@ -85,7 +85,7 @@ static uint8_t sendR(uint8_t DATA, uint8_t ADDRESS){
 
 /**
  * @def
- * send DATA on selected port
+ * SPI_send DATA on selected port
  * @param DATA \n
  * byte value
  * @tparam PORT \n
@@ -96,15 +96,15 @@ static uint8_t sendR(uint8_t DATA, uint8_t ADDRESS){
 
 template <volatile uint8_t**port, uint8_t num>
 
-static void send(uint8_t DATA){
+static void SPI_send(uint8_t DATA){
     **port=**port&(~num);
-    send(DATA);
+    SPI_send(DATA);
     **port=**port|(num);
 }
 
 /**
  * @def
- * send DATA with ADDRESS on selected port
+ * SPI_send DATA with ADDRESS on selected port
  * @param DATA \n
  * byte value
  * @param ADDRESS \n
@@ -117,16 +117,16 @@ static void send(uint8_t DATA){
 
 template <volatile uint8_t**port, uint8_t num>
 
-static void send(uint8_t DATA, uint8_t ADDRESS){
+static void SPI_send(uint8_t DATA, uint8_t ADDRESS){
     **port=**port&(~num);
-    send(ADDRESS);
-    send(DATA);
+    SPI_send(ADDRESS);
+    SPI_send(DATA);
     **port=**port|(num);
 }
 
 /**
  * @def
- * send DATA and return uint8_t on selected port
+ * SPI_send DATA and return uint8_t on selected port
  * @param DATA \n
  * byte value
  * @tparam PORT \n
@@ -137,16 +137,16 @@ static void send(uint8_t DATA, uint8_t ADDRESS){
 
 template <volatile uint8_t**port, uint8_t num>
 
-static uint8_t sendR(uint8_t DATA){
+static uint8_t SPI_sendR(uint8_t DATA){
     **port=**port&(~num);
-    uint8_t result = sendR(DATA);
+    uint8_t result = SPI_sendR(DATA);
     **port=**port|(num);
     return result;
 }
 
 /**
  * @def
- * send DATA with ADDRESS and return uint8_t on selected port
+ * SPI_send DATA with ADDRESS and return uint8_t on selected port
  * @param DATA \n
  * byte value
  * @param ADDRESS \n
@@ -159,10 +159,10 @@ static uint8_t sendR(uint8_t DATA){
 
 template <volatile uint8_t**port, uint8_t num>
 
-static uint8_t sendR(uint8_t DATA, uint8_t ADDRESS){
+static uint8_t SPI_sendR(uint8_t DATA, uint8_t ADDRESS){
     **port=**port&(~num);
-    send(ADDRESS);
-    uint8_t result = sendR(DATA);
+    SPI_send(ADDRESS);
+    uint8_t result = SPI_sendR(DATA);
     **port=**port|(num);
     return result;
 }

@@ -20,32 +20,32 @@ atmosphere BMP280_atmosphere;
 
 void BMP280_init(){
     MODE_SPI;
-    send<&CS_PORT, 1<<CS_NUM>(REG_CONFIG_VALUE, WRITE_MODE(REG_CONFIG));
-    send<&CS_PORT, 1<<CS_NUM>(REG_CTRL_MEAS_VALUE, WRITE_MODE(REG_CTRL_MEAS));
+    SPI_send<&CS_PORT, 1 << CS_NUM>(REG_CONFIG_VALUE, WRITE_MODE(REG_CONFIG));
+    SPI_send<&CS_PORT, 1 << CS_NUM>(REG_CTRL_MEAS_VALUE, WRITE_MODE(REG_CTRL_MEAS));
 }
 
 template <volatile uint8_t**port, uint8_t num>
 
 inline int16_t SPI_collect_duo(uint8_t address){
-    int16_t result =   sendR<port, num>(READ_SIGNAL, READ_MODE(address));
-    result |= (int16_t)sendR<port, num>(READ_SIGNAL, READ_MODE(address + 1)) << 8;
+    int16_t result = SPI_sendR<port, num>(READ_SIGNAL, READ_MODE(address));
+    result |= (int16_t) SPI_sendR<port, num>(READ_SIGNAL, READ_MODE(address + 1)) << 8;
     return result;
 }
 
 inline int32_t SPI_collect_trio(){
-    int32_t result = (int32_t)sendR(READ_SIGNAL) << 16;
-    result |= (int32_t)sendR(READ_SIGNAL) << 8;
-    result |= sendR(READ_SIGNAL);
+    int32_t result = (int32_t) SPI_sendR(READ_SIGNAL) << 16;
+    result |= (int32_t) SPI_sendR(READ_SIGNAL) << 8;
+    result |= SPI_sendR(READ_SIGNAL);
     return result >> 4;
 }
 
 atmosphere*BMP280_read(){
     MODE_SPI;
-    float dig_T1 = SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_T1)),
+    float dig_T1 = (uint16_t)SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_T1)),
           dig_T2 = SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_T2)),
           dig_T3 = SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_T3));
 
-    float dig_P1 = SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_P1)),
+    float dig_P1 =(uint16_t) SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_P1)),
           dig_P2 = SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_P2)),
           dig_P3 = SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_P3)),
           dig_P4 = SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_P4)),
@@ -56,7 +56,7 @@ atmosphere*BMP280_read(){
           dig_P9 = SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_P9));
 
     *CS_PORT &= ~(1 << CS_NUM);
-    send(READ_MODE(REG_ADC));
+    SPI_send(READ_MODE(REG_ADC));
     auto adc_P = (float)SPI_collect_trio(),
          adc_T = (float)SPI_collect_trio();
 

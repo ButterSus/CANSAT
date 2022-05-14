@@ -16,7 +16,7 @@ void NRF24L01_init();
 
 /**
  * @def
- * function to send string using NRF24L01
+ * function to SPI_send string using NRF24L01
  * @param data \n
  * string value
  */
