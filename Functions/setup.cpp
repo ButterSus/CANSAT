@@ -8,7 +8,9 @@
 #include "UART.h"
 #include "ADXL345.h"
 #include "BMP280.h"
+#include "MMC5883MA.h"
 #include <util/delay.h>
+#include "I2C.h"
 
 #define CLEAR DDRA = 0; DDRB = 0; DDRC = 0; DDRD = 0; DDRE = 0; DDRF = 0; DDRG = 0; PORTA = 0; PORTB = 0; PORTC = 0; PORTD = 0; PORTE = 0; PORTF = 0; PORTG = 0
 
@@ -41,7 +43,6 @@ void portMap(){
 void setup(){
     portMap();
     UART_init();
-    ADXL345_init();
-    NRF24L01_init();
-    BMP280_init();
+    I2C_init();
+    MMC5883MA_init();
 }

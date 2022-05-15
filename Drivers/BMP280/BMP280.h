@@ -9,7 +9,20 @@
 
 #include "atmosphere.h"
 
+/**
+ * @def
+ * init BMP280
+ */
+
 void BMP280_init();
+
+/**
+ * @def
+ * BMP280 data read function
+ * @return
+ * BMP280 atmosphere result
+ */
+
 atmosphere*BMP280_read();
 
 #endif //CANSAT_BMP280_H

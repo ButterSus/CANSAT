@@ -11,6 +11,7 @@
 #include "atmosphere.h"
 #include <stdio.h>
 
+/*! result of BMP280_read */
 atmosphere BMP280_atmosphere;
 
 /**
@@ -23,6 +24,19 @@ void BMP280_init(){
     SPI_send<&CS_PORT, 1 << CS_NUM>(REG_CONFIG_VALUE, WRITE_MODE(REG_CONFIG));
     SPI_send<&CS_PORT, 1 << CS_NUM>(REG_CTRL_MEAS_VALUE, WRITE_MODE(REG_CTRL_MEAS));
 }
+
+/**
+ * @def
+ * function to unite two bytes into one
+ * @tparam PORT \n
+ * CS port
+ * @tparam NUM \n
+ * CS num
+ * @param ADDRESS \n
+ * byte value
+ * @return
+ * int16_t value
+ */
 
 template <volatile uint8_t**port, uint8_t num>
 
@@ -38,6 +52,13 @@ inline int32_t SPI_collect_trio(){
     result |= SPI_sendR(READ_SIGNAL);
     return result >> 4;
 }
+
+/**
+ * @def
+ * BMP280 data read function
+ * @return
+ * BMP280 atmosphere result
+ */
 
 atmosphere*BMP280_read(){
     MODE_SPI;

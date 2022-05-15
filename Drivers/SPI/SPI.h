@@ -32,8 +32,8 @@ static volatile uint8_t * lpPORTG = &PORTG;
  * byte value
  */
 
-static void SPI_send(uint8_t DATA){
-    SPDR = DATA;
+static void SPI_send(uint8_t data){
+    SPDR = data;
     while(!(SPSR & (1<<SPIF)));
 }
 
@@ -46,10 +46,10 @@ static void SPI_send(uint8_t DATA){
  * byte value
  */
 
-static void SPI_send(uint8_t DATA, uint8_t ADDRESS){
-    SPDR = ADDRESS;
+static void SPI_send(uint8_t data, uint8_t address){
+    SPDR = address;
     while(!(SPSR & (1<<SPIF)));
-    SPDR = DATA;
+    SPDR = data;
     while(!(SPSR & (1<<SPIF)));
 }
 
@@ -70,11 +70,11 @@ static void SPI_send(uint8_t DATA, uint8_t ADDRESS){
 
 template <volatile uint8_t**port, uint8_t num>
 
-void SPI_send(uint8_t*DATA, uint8_t ADDRESS, uint8_t SIZE){
+void SPI_send(uint8_t*data, uint8_t address, uint8_t size){
     **port=**port&(~num);
-    SPI_send(ADDRESS);
-    for(uint8_t iter = 0; iter < SIZE; iter++){
-        SPI_send(DATA[iter]);
+    SPI_send(address);
+    for(uint8_t iter = 0; iter < size; iter++){
+        SPI_send(data[iter]);
     }
     **port=**port|(num);
 }
@@ -86,8 +86,8 @@ void SPI_send(uint8_t*DATA, uint8_t ADDRESS, uint8_t SIZE){
  * byte value
  */
 
-static uint8_t SPI_sendR(uint8_t DATA){
-    SPDR = DATA;
+static uint8_t SPI_sendR(uint8_t data){
+    SPDR = data;
     while(!(SPSR & (1<<SPIF)));
     return SPDR;
 }
@@ -101,10 +101,10 @@ static uint8_t SPI_sendR(uint8_t DATA){
  * byte value
  */
 
-static uint8_t SPI_sendR(uint8_t DATA, uint8_t ADDRESS){
-    SPDR = ADDRESS;
+static uint8_t SPI_sendR(uint8_t data, uint8_t address){
+    SPDR = address;
     while(!(SPSR & (1<<SPIF)));
-    SPDR = DATA;
+    SPDR = data;
     while(!(SPSR & (1<<SPIF)));
     return SPDR;
 }
@@ -122,9 +122,9 @@ static uint8_t SPI_sendR(uint8_t DATA, uint8_t ADDRESS){
 
 template <volatile uint8_t**port, uint8_t num>
 
-static void SPI_send(uint8_t DATA){
+static void SPI_send(uint8_t data){
     **port=**port&(~num);
-    SPI_send(DATA);
+    SPI_send(data);
     **port=**port|(num);
 }
 
@@ -143,10 +143,10 @@ static void SPI_send(uint8_t DATA){
 
 template <volatile uint8_t**port, uint8_t num>
 
-static void SPI_send(uint8_t DATA, uint8_t ADDRESS){
+static void SPI_send(uint8_t data, uint8_t address){
     **port=**port&(~num);
-    SPI_send(ADDRESS);
-    SPI_send(DATA);
+    SPI_send(address);
+    SPI_send(data);
     **port=**port|(num);
 }
 
@@ -163,9 +163,9 @@ static void SPI_send(uint8_t DATA, uint8_t ADDRESS){
 
 template <volatile uint8_t**port, uint8_t num>
 
-static uint8_t SPI_sendR(uint8_t DATA){
+static uint8_t SPI_sendR(uint8_t data){
     **port=**port&(~num);
-    uint8_t result = SPI_sendR(DATA);
+    uint8_t result = SPI_sendR(data);
     **port=**port|(num);
     return result;
 }
@@ -185,12 +185,38 @@ static uint8_t SPI_sendR(uint8_t DATA){
 
 template <volatile uint8_t**port, uint8_t num>
 
-static uint8_t SPI_sendR(uint8_t DATA, uint8_t ADDRESS){
+static uint8_t SPI_sendR(uint8_t data, uint8_t address){
     **port=**port&(~num);
-    SPI_send(ADDRESS);
-    uint8_t result = SPI_sendR(DATA);
+    SPI_send(address);
+    uint8_t result = SPI_sendR(data);
     **port=**port|(num);
     return result;
+}
+
+/**
+ * @def
+ * SPI_send DATA with ADDRESS for SIZE times
+ * @param DATA \n
+ * pointer to byte value
+ * @param SIZE \n
+ * byte value
+ * @param ADDRESS \n
+ * byte value
+ * @tparam PORT \n
+ * CS port
+ * @tparam NUM \n
+ * CS num
+ */
+
+template <volatile uint8_t**port, uint8_t num>
+
+void SPI_sendR(uint8_t*data, uint8_t address, uint8_t size, uint8_t readSignal){
+    **port=**port&(~num);
+    SPI_send(address);
+    for(uint8_t iter = 0; iter < size; iter++){
+        data[iter] = SPI_sendR(readSignal);
+    }
+    **port=**port|(num);
 }
 
 #endif //CANSAT_SPI_H

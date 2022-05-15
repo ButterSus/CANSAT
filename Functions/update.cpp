@@ -6,19 +6,11 @@
 
 #include <util/delay.h>
 #include <stdio.h>
-#include "NRF24L01.h"
-#include "ADXL345.h"
-#include "BMP280.h"
-
-#include "SPI.h"
-
-char format[32];
+#include "MMC5883MA.h"
+#include "I2C.h"
 
 void update(){
-    atmosphere*result = BMP280_read();
-    printf("T: %f \tP: %f\n", result->temperature, result->pressure);
-   // acceleration*result = ADXL345_read();
-   // sprintf(format, "F6 3 3 1 1 1 1 %i %i %i\r\n", result->X, result->Y, result->Z);
-   // NRF24L01_send(format);
+    axes*result = MMC5883MA_read();
+    printf("%i %i %i\r\n", result->x, result->y, result->z);
     _delay_ms(200);
 }

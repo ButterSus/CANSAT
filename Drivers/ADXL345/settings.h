@@ -2,9 +2,6 @@
  * @author ButterSus
  * @date 06.05.2022
  * @name SETTINGS FOR ADXL345
- *
- * @note
- * uses MACROS as SETTINGS
  */
 
 #ifndef CANSAT_ADXL345_SETTINGS_H

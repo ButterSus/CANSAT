@@ -8,8 +8,8 @@
 #include "SPI.h"
 #include "acceleration.h"
 
-acceleration ADXL345_acceleration;
 /*! result of ADXL345_read */
+acceleration ADXL345_acceleration;
 
 /**
  * @def

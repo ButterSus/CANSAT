@@ -9,7 +9,7 @@
 
 /*! CONFIG */
 
-#define WRITE_MODE(x) (x &~ 1)
+#define WRITE_MODE(x) (x & 0xFE)
 #define READ_MODE(x) (x | 1)
 
 #endif //CANSAT_I2C_SETTINGS_H
