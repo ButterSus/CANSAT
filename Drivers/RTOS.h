@@ -8,5 +8,6 @@
 #define CANSAT_RTOS_H
 
 #include "../RTOS/memory.h"
+#include "../RTOS/error.h"
 
 #endif //CANSAT_RTOS_H

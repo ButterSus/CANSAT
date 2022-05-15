@@ -7,6 +7,8 @@
 #ifndef CANSAT_I2C_SETTINGS_H
 #define CANSAT_I2C_SETTINGS_H
 
+/*! CONFIG */
+
 #define WRITE_MODE(x) (x &~ 1)
 #define READ_MODE(x) (x | 1)
 

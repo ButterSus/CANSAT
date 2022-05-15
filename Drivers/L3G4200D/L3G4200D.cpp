@@ -1,0 +1,16 @@
+/**
+ * @author ButterSus
+ * @date 06.05.2022
+ * @name L3G4200D
+ */
+
+#include "I2C.h"
+#include "settings.h"
+
+void L3G4200D_init(){
+    I2C_send<REG_L3G4200D>(REG_CTRL_REG1, REG_CTRL_REG1_VALUE);
+    I2C_send<REG_L3G4200D>(REG_CTRL_REG2, REG_CTRL_REG2_VALUE);
+    I2C_send<REG_L3G4200D>(REG_CTRL_REG3, REG_CTRL_REG3_VALUE);
+    I2C_send<REG_L3G4200D>(REG_CTRL_REG4, REG_CTRL_REG4_VALUE);
+    I2C_send<REG_L3G4200D>(REG_CTRL_REG5, REG_CTRL_REG5_VALUE);
+}

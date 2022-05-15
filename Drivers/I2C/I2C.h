@@ -12,6 +12,14 @@
 #include <avr/io.h>
 #include "RTOS.h"
 
+static void I2C_init(){
+    TWBR = 2;
+    TWSR = 0;
+    PORTD = (1<<PD1) | (1<<PD0);
+    DDRD = ~(1<<PD1) & (1<<PD0);
+    TWCR = (1<<TWINT)|(1<<TWEN);
+}
+
 static void I2C_start(){
     TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);
     while (!(TWCR & (1<<TWINT)));

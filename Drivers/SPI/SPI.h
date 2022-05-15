@@ -1,10 +1,10 @@
-#ifndef CANSAT_SEND_H
-#define CANSAT_SEND_H
+#ifndef CANSAT_SPI_H
+#define CANSAT_SPI_H
 
 /**
  * @author ButterSus
  * @date 06.05.2022
- * @name SPI_send
+ * @name SPI
  */
 
 #include <stdint.h>
@@ -51,6 +51,32 @@ static void SPI_send(uint8_t DATA, uint8_t ADDRESS){
     while(!(SPSR & (1<<SPIF)));
     SPDR = DATA;
     while(!(SPSR & (1<<SPIF)));
+}
+
+/**
+ * @def
+ * SPI_send DATA with ADDRESS for SIZE times
+ * @param DATA \n
+ * pointer to byte value
+ * @param SIZE \n
+ * byte value
+ * @param ADDRESS \n
+ * byte value
+ * @tparam PORT \n
+ * CS port
+ * @tparam NUM \n
+ * CS num
+ */
+
+template <volatile uint8_t**port, uint8_t num>
+
+void SPI_send(uint8_t*DATA, uint8_t ADDRESS, uint8_t SIZE){
+    **port=**port&(~num);
+    SPI_send(ADDRESS);
+    for(uint8_t iter = 0; iter < SIZE; iter++){
+        SPI_send(DATA[iter]);
+    }
+    **port=**port|(num);
 }
 
 /**
@@ -167,4 +193,4 @@ static uint8_t SPI_sendR(uint8_t DATA, uint8_t ADDRESS){
     return result;
 }
 
-#endif //CANSAT_SEND_H
+#endif //CANSAT_SPI_H

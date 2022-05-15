@@ -2,9 +2,6 @@
  * @author ButterSus
  * @date 06.05.2022
  * @name SETTINGS FOR NRF24L01
- *
- * @note
- * uses MACROS as SETTINGS
  */
 
 #ifndef CANSAT_NRF24L01_SETTINGS_H
