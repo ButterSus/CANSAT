@@ -1,16 +1,18 @@
 /**
  * @author ButterSus
- * @date 06.05.2022
+ * @date May 2022
  * @name update
  */
 
 #include <util/delay.h>
 #include <stdio.h>
-#include "MMC5883MA.h"
-#include "I2C.h"
+
+#include "NRF24L01.h"
+#include "ADXL345.h"
+#include "BMP280.h"
+#include "DS18B20.h"
 
 void update(){
-    axes*result = MMC5883MA_read();
-    printf("%i %i %i\r\n", result->x, result->y, result->z);
-    _delay_ms(200);
+    printf("%f", DS18B20_read(nullptr));
+    _delay_ms(1000);
 }

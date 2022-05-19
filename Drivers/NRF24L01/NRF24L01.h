@@ -1,6 +1,6 @@
 /**
  * @author ButterSus
- * @date 06.05.2022
+ * @date May 2022
  * @name NRF24L01
  */
 
@@ -21,6 +21,6 @@ void NRF24L01_init();
  * string value
  */
 
-void NRF24L01_send(char*data);
+void NRF24L01_send(const char*__string, ...);
 
 #endif //CANSAT_NRF24L01_H

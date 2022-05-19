@@ -1,6 +1,6 @@
 /**
  * @author ButterSus
- * @date 06.05.2022
+ * @date May 2022
  * @name UART
  */
 
@@ -16,7 +16,16 @@ int UART_connect(char symbol, FILE*);
  * stream for stdout
  */
 
-static FILE UART_stream = FDEV_SETUP_STREAM(UART_connect, nullptr, _FDEV_SETUP_WRITE);
+static FILE UART_stream = {
+        nullptr,
+        0,
+        _FDEV_SETUP_WRITE,
+        0,
+        0,
+        UART_connect,
+        nullptr,
+        nullptr
+};
 
 /**
  * @def

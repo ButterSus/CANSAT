@@ -1,6 +1,6 @@
 /**
  * @author ButterSus
- * @date 06.05.2022
+ * @date May 2022
  * @name BMP280
  */
 
@@ -11,7 +11,6 @@
 #include "atmosphere.h"
 #include <stdio.h>
 
-/*! result of BMP280_read */
 atmosphere BMP280_atmosphere;
 
 /**
@@ -24,19 +23,6 @@ void BMP280_init(){
     SPI_send<&CS_PORT, 1 << CS_NUM>(REG_CONFIG_VALUE, WRITE_MODE(REG_CONFIG));
     SPI_send<&CS_PORT, 1 << CS_NUM>(REG_CTRL_MEAS_VALUE, WRITE_MODE(REG_CTRL_MEAS));
 }
-
-/**
- * @def
- * function to unite two bytes into one
- * @tparam PORT \n
- * CS port
- * @tparam NUM \n
- * CS num
- * @param ADDRESS \n
- * byte value
- * @return
- * int16_t value
- */
 
 template <volatile uint8_t**port, uint8_t num>
 
@@ -53,20 +39,14 @@ inline int32_t SPI_collect_trio(){
     return result >> 4;
 }
 
-/**
- * @def
- * BMP280 data read function
- * @return
- * BMP280 atmosphere result
- */
-
 atmosphere*BMP280_read(){
     MODE_SPI;
-    float dig_T1 = (uint16_t)SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_T1)),
+
+    float dig_T1 = (uint16_t) SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_T1)),
           dig_T2 = SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_T2)),
           dig_T3 = SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_T3));
 
-    float dig_P1 =(uint16_t) SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_P1)),
+    float dig_P1 = (uint16_t) SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_P1)),
           dig_P2 = SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_P2)),
           dig_P3 = SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_P3)),
           dig_P4 = SPI_collect_duo<&CS_PORT, 1 << CS_NUM>(READ_MODE(REG_DIG_P4)),
@@ -86,7 +66,7 @@ atmosphere*BMP280_read(){
     auto var1 = (adc_T/16384.0f - dig_T1/1024.0f) * dig_T2;
     auto var2 = ((adc_T/131072.0f - dig_T1/8192.0f) * (adc_T/131072.0f - dig_T1/8192.0f)) * dig_T3;
     auto t_fine = var1 + var2;
-    BMP280_atmosphere.temperature = (var1 + var2)/5120.0f;
+    BMP280_atmosphere.TEMP = (var1 + var2) / 5120.0f;
 
     var1 = t_fine/2.0f - 64000.0f;
     var2 = var1 * var1 * dig_P6 / 32768.0f;
@@ -98,7 +78,7 @@ atmosphere*BMP280_read(){
     p = (p - var2 / 4096.0f) * 6250.0f / var1;
     var1 = dig_P9 * p * p / 2147483648.0f;
     var2 = p * dig_P8 / 32768.0f;
-    BMP280_atmosphere.pressure = p + (var1 + var2 + dig_P7) / 16.0f;
+    BMP280_atmosphere.PRESS = p + (var1 + var2 + dig_P7) / 16.0f;
 
     return &BMP280_atmosphere;
 }

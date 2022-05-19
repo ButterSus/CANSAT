@@ -1,6 +1,6 @@
 /**
  * @author ButterSus
- * @date 06.05.2022
+ * @date May 2022
  * @name functions
  */
 

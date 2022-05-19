@@ -1,6 +1,6 @@
 /**
  * @author ButterSus
- * @date 11.05.2022
+ * @date May 2022
  * @name DRIVER BMP280
  */
 

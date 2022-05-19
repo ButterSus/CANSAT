@@ -1,6 +1,6 @@
 /**
  * @author ButterSus
- * @date 06.05.2022
+ * @date May 2022
  * @name atmosphere
  */
 
@@ -13,7 +13,7 @@
  */
 
 typedef struct{
-    float temperature, pressure;
+    float TEMP, PRESS;
 }atmosphere;
 
 #endif //CANSAT_ATMOSPHERE_H

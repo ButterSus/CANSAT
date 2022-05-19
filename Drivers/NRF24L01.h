@@ -1,12 +1,7 @@
 /**
  * @author ButterSus
- * @date 06.05.2022
+ * @date May 2022
  * @name DRIVER NRF24L01
- *
- * @note
- * uses MACROS as SETTINGS \n
- * CSN used by NRF24L01 \n
- * CS used by RADIO
  */
 
 #ifndef CANSAT_DRIVER_NRF24L01_H
