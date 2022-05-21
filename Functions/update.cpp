@@ -13,6 +13,6 @@
 #include "DS18B20.h"
 
 void update(){
-    printf("%f", DS18B20_read(nullptr));
+    printf("%f\r\n", DS18B20_read(nullptr));
     _delay_ms(1000);
 }

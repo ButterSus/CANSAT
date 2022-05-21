@@ -15,7 +15,7 @@
 #define WIRE1_PORT lpPORTE
 #define WIRE1_DDR lpDDRE
 #define WIRE1_PIN lpPINE
-#define WIRE1_NUM 6
+#define WIRE1_NUM 7
 
 /*! CONFIG */
 
