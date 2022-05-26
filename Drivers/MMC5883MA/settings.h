@@ -1,30 +1,22 @@
 /**
  * @author ButterSus
- * @date 06.05.2022
- * @name settings for L3G4200D
+ * @date May 2022
+ * @name SETTINGS FOR MMC5883
  */
 
 #ifndef CANSAT_SETTINGS_H
 #define CANSAT_SETTINGS_H
 
-#include <avr/io.h>
+#include <stdio.h>
 
 /*! USER INTERFACE */
 
-#define REG_MMC5883MA 0b01100000
+static void MMC5883_I2C_error(){
+    printf("oh no we have a problem with a protocol named as I2C!!!\r\n");
+}
 
 /*! CONFIG */
 
-#define REG_INTERNAL_CONTROL_0 0x08
-#define REG_INTERNAL_CONTROL_1 0x09
-#define REG_INTERNAL_CONTROL_2 0x0A
-#define REG_X 0x00
-#define REG_Y 0x02
-#define REG_Z 0x04
-#define REG_STATUS 0x07
-
-#define REG_INTERNAL_CONTROL_0_VALUE 0b01000100
-#define REG_INTERNAL_CONTROL_1_VALUE 0b00000000
-#define REG_INTERNAL_CONTROL_2_VALUE 0b00001010
+#define MODE_I2C I2C_jmpbuf=&jmpbuf;if(setjmp(jmpbuf))return
 
 #endif //CANSAT_SETTINGS_H

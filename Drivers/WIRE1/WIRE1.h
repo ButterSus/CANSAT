@@ -19,7 +19,7 @@
 
 template <volatile uint8_t**port, volatile uint8_t**ddr, volatile uint8_t**pin, uint8_t num>
 
-void WIRE1_reset(){
+static void WIRE1_reset(){
     **ddr=**ddr|(num);
     **port=**port&~(num);
     _delay_us(480);
@@ -31,7 +31,7 @@ void WIRE1_reset(){
 
 template <volatile uint8_t**port, volatile uint8_t**ddr, volatile uint8_t**pin, uint8_t num>
 
-bool WIRE1_bitread(){
+static bool WIRE1_bitread(){
     **ddr=**ddr|(num);
     **port=**port&~(num);
     _delay_us(6);
@@ -43,7 +43,7 @@ bool WIRE1_bitread(){
 
 template <volatile uint8_t**port, volatile uint8_t**ddr, volatile uint8_t**pin, uint8_t num>
 
-uint8_t WIRE1_read(){
+static uint8_t WIRE1_read(){
     volatile uint8_t bit, result=0;
     for(uint8_t i = 0; i < 8; i++)
     {
@@ -54,7 +54,7 @@ uint8_t WIRE1_read(){
         **ddr=**ddr&~(num);
         **port=**port|(num);
         _delay_us(9);
-        bit = ((**pin & (num)) != 0) ? false : (1 << 7);
+        bit = ((**pin & (num)) != 0) ? (1 << 7): false;
         _delay_us(55);
         result |= bit;
     };
@@ -63,7 +63,7 @@ uint8_t WIRE1_read(){
 
 template <volatile uint8_t**port, volatile uint8_t**ddr, volatile uint8_t**pin, uint8_t num>
 
-void WIRE1_write(uint8_t value){
+static void WIRE1_write(uint8_t value){
     for(uint8_t iter = 0; iter < 8; iter++){
         **ddr=**ddr|(num);
         **port=**port&~(num);

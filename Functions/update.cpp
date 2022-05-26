@@ -11,8 +11,12 @@
 #include "ADXL345.h"
 #include "BMP280.h"
 #include "DS18B20.h"
+#include "MMC5883MA.h"
 
 void update(){
-    printf("%f\r\n", DS18B20_read(nullptr));
+    MMC5883_measure();
     _delay_ms(1000);
+    face*result = MMC5883_read();
+    if(result == (face*)1)printf("error");
+    printf("lol: %f %f %f\r\n", result->x, result->y, result->z);
 }

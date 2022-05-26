@@ -71,7 +71,7 @@ static uint8_t SPI_sendR(uint8_t DATA, uint8_t ADDRESS){
 
 /**
  * @def
- * SPI_send DATA on selected port
+ * SPI_send DATA on selected PORT
  * @param DATA \n
  * byte value
  * @tparam PORT \n
@@ -90,7 +90,7 @@ static void SPI_send(uint8_t DATA){
 
 /**
  * @def
- * SPI_send DATA with ADDRESS on selected port
+ * SPI_send DATA with ADDRESS on selected PORT
  * @param DATA \n
  * byte value
  * @param ADDRESS \n
@@ -112,7 +112,7 @@ static void SPI_send(uint8_t DATA, uint8_t ADDRESS){
 
 /**
  * @def
- * SPI_send DATA and return uint8_t on selected port
+ * SPI_send DATA and return uint8_t on selected PORT
  * @param DATA \n
  * byte value
  * @tparam PORT \n
@@ -132,7 +132,7 @@ static uint8_t SPI_sendR(uint8_t DATA){
 
 /**
  * @def
- * SPI_send DATA with ADDRESS and return uint8_t on selected port
+ * SPI_send DATA with ADDRESS and return uint8_t on selected PORT
  * @param DATA \n
  * byte value
  * @param ADDRESS \n

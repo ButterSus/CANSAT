@@ -1,15 +1,16 @@
 /**
  * @author ButterSus
- * @date 06.05.2022
- * @name MMC5883MA
+ * @date May 2022
+ * @name MMC5883
  */
 
 #ifndef CANSAT_MMC5883MA_H
 #define CANSAT_MMC5883MA_H
 
-#include "axes.h"
+#include "face.h"
 
-void MMC5883MA_init();
-axes*MMC5883MA_read();
+void MMC5883_init();
+void MMC5883_measure();
+face*MMC5883_read();
 
 #endif //CANSAT_MMC5883MA_H

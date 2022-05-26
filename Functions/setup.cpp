@@ -12,6 +12,8 @@
 #include "ADXL345.h"
 #include "BMP280.h"
 #include "DS18B20.h"
+#include "MMC5883MA.h"
+#include "I2C.h"
 
 #define CLEAR DDRA = 0; DDRB = 0; DDRC = 0; DDRD = 0; DDRE = 0; DDRF = 0; DDRG = 0; PORTA = 0; PORTB = 0; PORTC = 0; PORTD = 0; PORTE = 0; PORTF = 0; PORTG = 0
 
@@ -40,6 +42,11 @@ void portMap(){
     DDRB |=  (1<<PB6); /*! 14 - NRF24L01 CE   */ /*! RADIO    */
     DDRB |=  (1<<PB7); /*! 15 - NRF24L01 CSN  */ /*! NRF24L01 */
 
+    /*! I2C */
+
+    DDRD &= ~(1<<PD0); /*! 25 - SCL   (READ)  */
+    DDRD &= ~(1<<PD1); /*! 26 - SDA   (READ)  */
+
     PORTB &= ~(1<<PB5); // disabling BMP280 CS for SPI detecting
     _delay_ms(5);
     PORTB |= (1<<PB4);  // enabling ADXL345 CS
@@ -51,5 +58,7 @@ void portMap(){
 void setup(){
     portMap();
     UART_init();
-
+    I2C_init();
+    MMC5883_init();
+    printf("inited\r\n");
 }
