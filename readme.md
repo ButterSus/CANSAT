@@ -6,8 +6,8 @@ first AVR project. (feat. ThePetrovich & bear1ake)
 
 ### Features
 
-- [Project structure](#Project structure)
-- [`.cpp` structure](`.cpp` structure)
+- Project structure
+- .cpp structure
 
 ### Project structure
 
@@ -74,5 +74,3 @@ first AVR project. (feat. ThePetrovich & bear1ake)
         }
     }
     ```
-
-[Project structure](#-Project-structure)
