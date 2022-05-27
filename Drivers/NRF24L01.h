@@ -2,6 +2,8 @@
  * @author ButterSus
  * @date May 2022
  * @name DRIVER NRF24L01
+ *
+ * @protocol SPI
  */
 
 #ifndef CANSAT_DRIVER_NRF24L01_H

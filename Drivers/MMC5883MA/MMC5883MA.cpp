@@ -11,7 +11,8 @@
 #include <avr/io.h>
 
 face MMC5883MA_face;
-jmp_buf jmpbuf;
+
+static jmp_buf jmpbuf;
 
 /**
  * @def
@@ -33,13 +34,6 @@ void MMC5883_init(){
     if(not I2C_wantToGetMore()) I2C_error();
     I2C_transmitData(REG_CONTROL_B_VALUE);
     I2C_stop();
-//
-//    I2C_start();
-//    I2C_transmitAddress(DEVICE_ADDRESS + I2C_WRITE);
-//    I2C_transmitData(REG_MODE);
-//    if(not I2C_wantToGetMore()) I2C_error();
-//    I2C_transmitData(REG_MODE_VALUE);
-//    I2C_stop();
 }
 
 void MMC5883_measure(){

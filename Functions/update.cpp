@@ -15,7 +15,9 @@
 #include "BMP280.h"
 #include "DS18B20.h"
 #include "MMC5883MA.h"
+#include "L3G4200D.h"
 
 void update(){
-    NRF24L01_send("%f", 0.3f);
+    NRF24L01_send("hello world!");
+    _delay_ms(300);
 }

@@ -2,6 +2,8 @@
  * @author ButterSus
  * @date May 2022
  * @name DRIVER BMP280
+ *
+ * @protocol SPI
  */
 
 #ifndef CANSAT_DRIVER_BMP280_H

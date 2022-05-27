@@ -2,6 +2,8 @@
  * @author ButterSus
  * @date May 2022
  * @name DRIVER ADXL345
+ *
+ * @protocol SPI
  */
 
 #ifndef CANSAT_DRIVER_ADXL345_H

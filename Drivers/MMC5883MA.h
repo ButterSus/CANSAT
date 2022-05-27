@@ -2,6 +2,8 @@
  * @author ButterSus
  * @date May 2022
  * @name DRIVER MMC5883
+ *
+ * @protocol I2C
  */
 
 #ifndef CANSAT_DRIVER_MMC5883MA_H

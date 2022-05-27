@@ -13,7 +13,7 @@
 
 #define CE_PORT lpPORTB
 #define CE_NUM 6
-#define CE_DELAY 10
+#define CE_DELAY 100
 
 #define CSN_PORT lpPORTB
 #define CSN_NUM 7
@@ -35,7 +35,7 @@ SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0)
 #define REG_FEATURE     0x1D
 
 #define REG_CONFIG_VALUE		0x02 // 0x0A
-#define REG_CHANNEL_VALUE		100
+#define REG_CHANNEL_VALUE		120
 #define REG_RFSET_VALUE		    0x0F
 #define REG_AA_EN_VALUE		    0x00
 #define REG_RXADDR_VALUE		0x07

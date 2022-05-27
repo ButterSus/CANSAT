@@ -92,7 +92,7 @@ char NRF24L01_buffer[33];
 
 void NRF24L01_send(const char*__string, ...){
     va_list vl;
-    int iter = 0, stringIter = 0;
+    int iter = 0, stringIter = 1;
     va_start(vl, __string);
     while(__string[iter] != '\0'){
         if(__string[iter] == '%'){
