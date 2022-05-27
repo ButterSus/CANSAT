@@ -21,61 +21,60 @@ jmp_buf jmpbuf;
 void MMC5883_init(){
     MODE_I2C;
     I2C_start();
-    I2C_transmitAddress(0b01100000 + I2C_WRITE);
-    I2C_transmitData(0b00001000);
+    I2C_transmitAddress(DEVICE_ADDRESS + I2C_WRITE);
+    I2C_transmitData(REG_CONTROL_A);
     if(not I2C_wantToGetMore()) I2C_error();
-    I2C_transmitData(0b00001000);
+    I2C_transmitData(REG_CONTROL_A_VALUE);
     I2C_stop();
+
+    I2C_start();
+    I2C_transmitAddress(DEVICE_ADDRESS + I2C_WRITE);
+    I2C_transmitData(REG_CONTROL_B);
+    if(not I2C_wantToGetMore()) I2C_error();
+    I2C_transmitData(REG_CONTROL_B_VALUE);
+    I2C_stop();
+//
+//    I2C_start();
+//    I2C_transmitAddress(DEVICE_ADDRESS + I2C_WRITE);
+//    I2C_transmitData(REG_MODE);
+//    if(not I2C_wantToGetMore()) I2C_error();
+//    I2C_transmitData(REG_MODE_VALUE);
+//    I2C_stop();
 }
 
 void MMC5883_measure(){
-    MODE_I2C;
     I2C_start();
-    I2C_transmitAddress(0b01100000 + I2C_WRITE);
-    I2C_transmitData(0b00001000);
+    I2C_transmitAddress(DEVICE_ADDRESS + I2C_WRITE);
+    I2C_transmitData(REG_MODE);
     if(not I2C_wantToGetMore()) I2C_error();
-    I2C_transmitData(0b00000001);
+    I2C_transmitData(REG_MODE_VALUE);
     I2C_stop();
 }
 
 face*MMC5883_read(){
     MODE_I2C (face*)1;
     I2C_start();
-    I2C_transmitAddress(0b01100000 + I2C_WRITE);
-    printf("adr ");
-    I2C_transmitData(0b00000000);
-    printf("m1 ");
+    I2C_transmitAddress(DEVICE_ADDRESS + I2C_WRITE);
+    I2C_transmitData(REG_AXES);
     I2C_start();
-    printf("sr ");
-    I2C_transmitAddress(0b01100000 + I2C_READ);
-    printf("m2 ");
-    I2C_sendACK();
-    int16_t x = TWDR;
-    printf("x1 ");
-    I2C_sendACK();
-    x |= (int16_t)TWDR << 8;
-    printf("x2 ");
-
+    I2C_transmitAddress(DEVICE_ADDRESS + I2C_READ);
 
     I2C_sendACK();
-    int16_t y = TWDR;
-    printf("y1 ");
+    int16_t x = (int16_t)TWDR << 8;
+    I2C_sendACK();
+    x |= TWDR;
 
     I2C_sendACK();
-    y |= (int16_t)TWDR << 8;
-    printf("y2 ");
-
+    int16_t z = (int16_t)TWDR << 8;
+    I2C_sendACK();
+    z |= TWDR;
 
     I2C_sendACK();
-    int16_t z = TWDR;
-    printf("z1 ");
-
+    int16_t y = (int16_t)TWDR << 8;
     I2C_sendNACK();
-    z |= (int16_t)TWDR << 8;
-    printf("z2 ");
+    y |= TWDR;
 
     I2C_stop();
-    printf("%i %i %i\r\n", x, y, z);
     MMC5883MA_face = {
             (float)x,
             (float)y,

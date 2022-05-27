@@ -98,10 +98,12 @@ void NRF24L01_send(const char*__string, ...){
         if(__string[iter] == '%'){
             iter++;
             switch(__string[iter]){
+                case 'c':
                 case '1':{
                     NRF24L01_buffer[stringIter++] = va_arg(vl, uint16_t);
                     break;
                 }
+                case 'i':
                 case '2':{
                     union{
                         char bytes[2];
@@ -112,6 +114,11 @@ void NRF24L01_send(const char*__string, ...){
                     NRF24L01_buffer[stringIter++] = result.bytes[1];
                     break;
                 }
+                case 'z':{
+                    iter++;
+                    if(__string[iter]!='u') break;
+                }
+                case 'f':
                 case '4':{
                     union{
                         char bytes[4];
@@ -122,6 +129,14 @@ void NRF24L01_send(const char*__string, ...){
                     NRF24L01_buffer[stringIter++] = result.bytes[1];
                     NRF24L01_buffer[stringIter++] = result.bytes[2];
                     NRF24L01_buffer[stringIter++] = result.bytes[3];
+                    break;
+                }
+                case 's':{
+                    uint8_t length = va_arg(vl, uint8_t);
+                    char*result = va_arg(vl, char*);
+                    for(uint8_t iterator = 0; iterator < (length - 1); iterator++){
+                        NRF24L01_buffer[stringIter++] = result[iterator];
+                    }
                     break;
                 }
             }

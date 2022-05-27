@@ -25,11 +25,6 @@ float DS18B20_read(uint8_t*id){
     bool isDone;
     DS18B20_beReadyToFight(id);
     WIRE1_write<&WIRE1_PORT, &WIRE1_DDR, &WIRE1_PIN, 1<<WIRE1_NUM>(CMD_CONVERT_T);
-//    do
-//    {
-//        isDone = WIRE1_bitread<&WIRE1_PORT, &WIRE1_DDR, &WIRE1_PIN, 1<<WIRE1_NUM>();
-//    }
-//    while(not isDone);
     _delay_ms(800);
     DS18B20_beReadyToFight(id);
     WIRE1_write<&WIRE1_PORT, &WIRE1_DDR, &WIRE1_PIN, 1<<WIRE1_NUM>(CMD_READ_SPD);

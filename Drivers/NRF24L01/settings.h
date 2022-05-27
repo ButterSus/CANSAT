@@ -37,7 +37,7 @@ SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0)
 #define REG_CONFIG_VALUE		0x02 // 0x0A
 #define REG_CHANNEL_VALUE		100
 #define REG_RFSET_VALUE		    0x0F
-#define REG_AA_EN_VALUE		    0x07
+#define REG_AA_EN_VALUE		    0x00
 #define REG_RXADDR_VALUE		0x07
 #define REG_STATUS_VALUE		0x30
 #define REG_SETUP_RETR_VALUE    0x2F
