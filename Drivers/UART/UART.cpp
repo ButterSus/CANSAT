@@ -9,6 +9,8 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
+#include "NSystem.h"
+
 int UART_connect(char symbol, FILE*);
 
 /**
@@ -59,5 +61,5 @@ void UART_init(){
  */
 
 ISR(USART0_RX_vect){
-    printf("%c",UDR0);
+    ISR_handler(UDR0);
 }

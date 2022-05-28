@@ -2,7 +2,7 @@
 
 `February 2022` - `July 2022`
 
-first AVR project. (feat. ThePetrovich & bear1ake)
+first AVR project. (feat. [ThePetrovich](https://github.com/ThePetrovich) & [bear1ake](https://github.com/bear1ake))
 
 ### Features
 

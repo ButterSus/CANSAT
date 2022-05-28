@@ -60,6 +60,6 @@ void setup(){
     portMap();
     UART_init();
     I2C_init();
-    L3G4200D_init();
-    NRF24L01_init();
+
+    ADXL345_init();
 }
