@@ -4,43 +4,50 @@
  * @name update
  */
 
+#include <avr/io.h>
 #include <util/delay.h>
-#include <stdio.h>
-#include <math.h>
+#include <string.h>
+#include "UART.h"
 
-#include "NRF24L01.h"
+#include "OLD_NRF24L01/NRF24L01.h"
 #include "ADXL345.h"
 #include "BMP280.h"
 #include "DS18B20.h"
 #include "MMC5883MA.h"
 #include "L3G4200D.h"
 
-template <typename T, size_t N>
-constexpr size_t array_size(T (&)[N]) {
-    return N;
-}
-
-acceleration ADXL345[5];
-static uint32_t iter = -300;
+char PAKET1[32];
+char PAKET2[32];
+char PAKET3[32];
+char PAKET4[32];
+uint8_t T_iter;
 
 void update(){
-//    acceleration*ADXL345_result = ADXL345_read();
-//    ADXL345[iter % array_size(ADXL345)].X = ADXL345_result->X;
-//    ADXL345[iter % array_size(ADXL345)].Y = ADXL345_result->Y;
-//    ADXL345[iter % array_size(ADXL345)].Z = ADXL345_result->Z;
-//    printf("source:%i %i %i\r\n", ADXL345_result->X, ADXL345_result->Y, ADXL345_result->Z);
-//    ADXL345_result ->X = 0;
-//    ADXL345_result ->Y = 0;
-//    ADXL345_result ->Z = 0;
-//    for(size_t i = 0; i < array_size(ADXL345); i++){
-//        ADXL345_result->X += ADXL345[i].X;
-//        ADXL345_result->Y += ADXL345[i].Y;
-//        ADXL345_result->Z += ADXL345[i].Z;
-//    }
-//    ADXL345_result->X /= array_size(ADXL345);
-//    ADXL345_result->Y /= array_size(ADXL345);
-//    ADXL345_result->Z /= array_size(ADXL345);
-//    printf("result:%i %i %i\r\n", ADXL345_result->X, ADXL345_result->Y, ADXL345_result->Z);
-//    iter++;
+    T_iter++;
+    acceleration*ADXL345 = ADXL345_read();
+    sprintf(PAKET1, "A: %d %d %d\n", ADXL345->X, ADXL345->Y, ADXL345->Z);
+    printf("%s", PAKET1);
+    NRF24L01_send0(PAKET1, strlen(PAKET1) + 1);
+    axes*L3G = L3G4200D_read();
+    sprintf(PAKET2, "G:%.2f %.2f %.2f\n", L3G->x, L3G->y, L3G->z);
+    printf("%s", PAKET2);
+    NRF24L01_send0(PAKET2, strlen(PAKET2) + 1);
+    MMC5883_measure();
+    _delay_ms(10);
+    face*HMC = MMC5883_read();
+    sprintf(PAKET3, "M:%.2f %.2f %.2f\n", HMC->x, HMC->y, HMC->z);
+    printf("%s", PAKET3);
+    NRF24L01_send0(PAKET3, strlen(PAKET3) + 1);
+    atmosphere*BMP280 = BMP280_read();
     _delay_ms(500);
+    sprintf(PAKET4, "W:%.2f %.2f %.2f\n", DS18B20_read(nullptr), BMP280->TEMP, BMP280->PRESS);
+    printf("%s", PAKET4);
+    NRF24L01_send0(PAKET4, strlen(PAKET4) + 1);
+    if(T_iter > 2)
+    {
+        DS18B20_ConvertT(nullptr);
+        T_iter = 0;
+    }
+//    NRF24L01_send0(":Hello world", 13);
+//    _delay_ms(100);
 }

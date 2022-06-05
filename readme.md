@@ -9,6 +9,21 @@ first AVR project. (feat. [ThePetrovich](https://github.com/ThePetrovich) & [bea
 - Project structure
 - .cpp structure
 
+### Color schematic
+
+- `VCC`
+  - `red`
+- `GND`
+  - `black`
+- `UART`
+  - `yellow`
+- `SPI`
+  - `green`
+- `I2C`
+  - `blue`
+- `1-WIRE`
+  - `brown`
+
 ### Project structure
 
 - `main.c` calls setup then update in loop.

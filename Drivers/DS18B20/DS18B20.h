@@ -9,6 +9,7 @@
 
 #include <stdint.h>
 
+void DS18B20_ConvertT(uint8_t*id);
 float DS18B20_read(uint8_t*id);
 
 #endif //CANSAT_DS18B20_H

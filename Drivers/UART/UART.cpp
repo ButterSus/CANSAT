@@ -47,6 +47,7 @@ int UART_connect(char symbol, FILE*){
 
 void UART_init(){
     sei();
+    cli();
     UCSR0A = 0x0;
     UCSR0B = 0b10011000;
     UCSR0C = 0b110;

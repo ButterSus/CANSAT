@@ -48,13 +48,15 @@ void NRF24L01_init(){
     _delay_us(CE_DELAY);
     *CE_PORT &= ~(1<<CE_NUM);
     SPI_send<&CSN_PORT, 1 << CSN_NUM>(CMD_FLUSH);
-    sendM<&CSN_PORT, 1<<CSN_NUM>(REG_TXADDR_VALUE, WRITE_MODE(REG_TX), 5);
+    sendM<&CSN_PORT, 1<<CSN_NUM>(REG_TXADDR_VALUE, WRITE_MODE(REG_TXADDR), 5);
+    sendM<&CSN_PORT, 1<<CSN_NUM>(REG_RXADDR_VALUE, WRITE_MODE(REG_RXADDR), 5);
     SPI_send<&CSN_PORT, 1 << CSN_NUM>(REG_STATUS_VALUE, WRITE_MODE(REG_STATUS));
 
     /*! SETUP CONFIG */
 
-    SPI_send<&CSN_PORT, 1 << CSN_NUM>(REG_AA_EN_VALUE, WRITE_MODE(REG_EN_AA));
-    SPI_send<&CSN_PORT, 1 << CSN_NUM>(REG_RXADDR_VALUE, WRITE_MODE(REG_RXADDR));
+    SPI_send<&CSN_PORT, 1 << CSN_NUM>(REG_EN_AA_VALUE, WRITE_MODE(REG_EN_AA));
+    SPI_send<&CSN_PORT, 1 << CSN_NUM>(REG_EN_RXADDR_VALUE, WRITE_MODE(REG_EN_RXADDR));
+    SPI_send<&CSN_PORT, 1 << CSN_NUM>(REG_SETUP_AW, WRITE_MODE(REG_SETUP_AW_VALUE));
     SPI_send<&CSN_PORT, 1 << CSN_NUM>(REG_CHANNEL_VALUE, WRITE_MODE(REG_CHANNEL));
     SPI_send<&CSN_PORT, 1 << CSN_NUM>(REG_RFSET_VALUE, WRITE_MODE(REG_RFSET));
     SPI_send<&CSN_PORT, 1 << CSN_NUM>(REG_CONFIG_VALUE, WRITE_MODE(REG_CONFIG));
@@ -67,6 +69,16 @@ void NRF24L01_init(){
     SPI_send<&CSN_PORT, 1 << CSN_NUM>(REG_STATUS_VALUE, WRITE_MODE(REG_STATUS));
 }
 
+bool NRF24L01_isDone(){
+    if(SPI_sendR<&CSN_PORT, 1 << CSN_NUM>(0xFF, READ_MODE(0x07)) & (1<<5)){
+        SPI_send<&CSN_PORT, 1 << CSN_NUM>(0b00100000, WRITE_MODE(0x07));
+        return true;
+    }
+    return false;
+}
+
+uint8_t NRF24L01_iter;
+
 /**
  * @def
  * function to SPI_send string using NRF24L01
@@ -76,77 +88,25 @@ void NRF24L01_init(){
 
 void NRF24L01_transmit(char*data, int size){
     MODE_SPI;
+    NRF24L01_iter = 0;
+    SPI_send<&CSN_PORT, 1 << CSN_NUM>(REG_CHANNEL_VALUE,REG_CHANNEL);
+    SPI_send<&CSN_PORT, 1 << CSN_NUM>(REG_STATUS_VALUE, REG_STATUS);
+    SPI_send<&CSN_PORT, 1 << CSN_NUM>(0xE2);
     *CSN_PORT &= ~(1<<CSN_NUM);
-    SPI_send(MODE_UNPROTECTED);
+    SPI_send(MODE_PROTECTED);
     for(int iter = 0; iter < size; iter++){
         SPI_send(data[iter]);
     }
-    *CE_PORT |=  (1<<CE_NUM);
-    _delay_us(CE_DELAY);
-    *CE_PORT &= ~(1<<CE_NUM);
-    SPI_send(CMD_FLUSH);
-    *CSN_PORT |=  (1<<CSN_NUM);
-}
-
-char NRF24L01_buffer[33];
-
-void NRF24L01_send(const char*__string, ...){
-    va_list vl;
-    int iter = 0, stringIter = 1;
-    va_start(vl, __string);
-    while(__string[iter] != '\0'){
-        if(__string[iter] == '%'){
-            iter++;
-            switch(__string[iter]){
-                case 'c':
-                case '1':{
-                    NRF24L01_buffer[stringIter++] = va_arg(vl, uint16_t);
-                    break;
-                }
-                case 'i':
-                case '2':{
-                    union{
-                        char bytes[2];
-                        uint16_t value;
-                    }result;
-                    result.value = va_arg(vl, uint16_t);
-                    NRF24L01_buffer[stringIter++] = result.bytes[0];
-                    NRF24L01_buffer[stringIter++] = result.bytes[1];
-                    break;
-                }
-                case 'z':{
-                    iter++;
-                    if(__string[iter]!='u') break;
-                }
-                case 'f':
-                case '4':{
-                    union{
-                        char bytes[4];
-                        uint32_t value;
-                    }result;
-                    result.value = va_arg(vl, uint32_t);
-                    NRF24L01_buffer[stringIter++] = result.bytes[0];
-                    NRF24L01_buffer[stringIter++] = result.bytes[1];
-                    NRF24L01_buffer[stringIter++] = result.bytes[2];
-                    NRF24L01_buffer[stringIter++] = result.bytes[3];
-                    break;
-                }
-                case 's':{
-                    uint8_t length = va_arg(vl, uint8_t);
-                    char*result = va_arg(vl, char*);
-                    for(uint8_t iterator = 0; iterator < (length - 1); iterator++){
-                        NRF24L01_buffer[stringIter++] = result[iterator];
-                    }
-                    break;
-                }
-            }
+    do{
+        if(SPI_sendR<&CSN_PORT, 1 << CSN_NUM>(0xFF, READ_MODE(0x17)) & (1<<4)){
+            break;
         }
-        else{
-            NRF24L01_buffer[stringIter++] = __string[iter];
-        }
-        iter++;
+        *CE_PORT |=  (1<<CE_NUM);
+        _delay_us(CE_DELAY);
+        *CE_PORT &= ~(1<<CE_NUM);
+        SPI_send(CMD_FLUSH);
+        *CSN_PORT |=  (1<<CSN_NUM);
+        NRF24L01_iter++;
     }
-    va_end(vl);
-    NRF24L01_buffer[stringIter] = '\0';
-    NRF24L01_transmit(NRF24L01_buffer, stringIter + 1);
+    while(not NRF24L01_isDone() and (NRF24L01_iter < 90));
 }

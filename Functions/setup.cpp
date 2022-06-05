@@ -8,7 +8,7 @@
 #include <util/delay.h>
 
 #include "UART.h"
-#include "NRF24L01.h"
+#include "OLD_NRF24L01/NRF24L01.h"
 #include "ADXL345.h"
 #include "BMP280.h"
 #include "DS18B20.h"
@@ -47,13 +47,6 @@ void portMap(){
     /*! I2C */
     DDRD &= ~(1<<PD0); /*! 25 - SCL   (READ)  */
     DDRD &= ~(1<<PD1); /*! 26 - SDA   (READ)  */
-
-    PORTB &= ~(1<<PB5); // disabling BMP280 CS for SPI detecting
-    _delay_ms(5);
-    PORTB |= (1<<PB4);  // enabling ADXL345 CS
-    PORTB |= (1<<PB5);  // enabling BMP280 CS
-    PORTB &= ~(1<<PB6); // disabling NRF24L01 CE
-    PORTB |= (1<<PB7);
 }
 
 void setup(){
@@ -61,5 +54,9 @@ void setup(){
     UART_init();
     I2C_init();
 
+    NRF24L01_init0();
     ADXL345_init();
+    BMP280_init();
+    MMC5883_init();
+    L3G4200D_init();
 }

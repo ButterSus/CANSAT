@@ -1,11 +1,11 @@
 /**
  * @author ButterSus
- * @date May 2022
+ * @date 06.05.2022
  * @name NRF24L01
  */
 
-#ifndef CANSAT_NRF24L01_H
-#define CANSAT_NRF24L01_H
+#ifndef CANSAT_OLD_NRF24L01_H
+#define CANSAT_OLD_NRF24L01_H
 
 #include <stdint.h>
 
@@ -14,21 +14,24 @@
  * init NRF24L01
  */
 
-void NRF24L01_init();
+void NRF24L01_init0();
 
 /**
  * @def
- * function to SPI_send string using NRF24L01
+ * function to send string using NRF24L01
  * @param data \n
  * string value
  */
 
-void NRF24L01_transmit(char*data, int size);
+void NRF24L01_send0(char*data, uint8_t size);
 
 /**
  * @def
  * class to use `NRF24L01_cout`
  */
+
+
+void nRF_send_other(char * data);
 
 class NRF24L01_iostream{
 private:
@@ -72,7 +75,7 @@ public:
         return this->operator<<((uint32_t)src);
     }
 
-    NRF24L01_iostream &operator<<(const char*src){
+    NRF24L01_iostream &operator<<(char*src){
         this->iter = 0;
         while(src[this->iter] != '\0'){
             this->string[this->stringIter++] = src[this->iter++];
@@ -81,7 +84,8 @@ public:
     }
 
     NRF24L01_iostream &operator<<(NRF24L01_iostream src){
-        NRF24L01_transmit(this->string, this->stringIter);
+        NRF24L01_send0(this->string, this->stringIter);
+        cout << (const char*) this->string << endl;
         this->stringIter = 1;
         return *this;
     }
@@ -101,4 +105,4 @@ static NRF24L01_iostream NRF24L01_endl;
 
 static NRF24L01_iostream NRF24L01_cout;
 
-#endif //CANSAT_NRF24L01_H
+#endif //CANSAT_OLD_NRF24L01_H

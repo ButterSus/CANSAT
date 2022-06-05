@@ -21,11 +21,12 @@ void DS18B20_beReadyToFight(uint8_t*id){
     }
 }
 
-float DS18B20_read(uint8_t*id){
-    bool isDone;
+void DS18B20_ConvertT(uint8_t*id) {
     DS18B20_beReadyToFight(id);
-    WIRE1_write<&WIRE1_PORT, &WIRE1_DDR, &WIRE1_PIN, 1<<WIRE1_NUM>(CMD_CONVERT_T);
-    _delay_ms(800);
+    WIRE1_write<&WIRE1_PORT, &WIRE1_DDR, &WIRE1_PIN, 1 << WIRE1_NUM>(CMD_CONVERT_T);
+}
+
+float DS18B20_read(uint8_t*id){
     DS18B20_beReadyToFight(id);
     WIRE1_write<&WIRE1_PORT, &WIRE1_DDR, &WIRE1_PIN, 1<<WIRE1_NUM>(CMD_READ_SPD);
     int16_t buffer = WIRE1_read<&WIRE1_PORT, &WIRE1_DDR, &WIRE1_PIN, 1<<WIRE1_NUM>();
@@ -33,3 +34,5 @@ float DS18B20_read(uint8_t*id){
     float result = buffer / 16.0f;
     return result;
 }
+
+
