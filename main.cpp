@@ -5,8 +5,9 @@
  */
 
 #include "functions.h"
+#include <avr/io.h>
 
-/*! if true -> update runs */
+/*! if it's true update runs */
 bool run = true;
 
 /**

@@ -4,6 +4,4 @@
  * @name thread
  */
 
-#include <avr/io.h>
-
-
+#include "tools.h"

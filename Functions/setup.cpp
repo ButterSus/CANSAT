@@ -6,16 +6,8 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-
 #include "UART.h"
-#include "OLD_NRF24L01/NRF24L01.h"
-#include "ADXL345.h"
-#include "BMP280.h"
-#include "DS18B20.h"
-#include "MMC5883MA.h"
-#include "I2C.h"
-#include "WIRE1.h"
-#include "L3G4200D.h"
+#include "RTOS.h"
 
 #define CLEAR DDRA = 0; DDRB = 0; DDRC = 0; DDRD = 0; DDRE = 0; DDRF = 0; DDRG = 0; PORTA = 0; PORTB = 0; PORTC = 0; PORTD = 0; PORTE = 0; PORTF = 0; PORTG = 0
 
@@ -52,11 +44,4 @@ void portMap(){
 void setup(){
     portMap();
     UART_init();
-    I2C_init();
-
-    NRF24L01_init0();
-    ADXL345_init();
-    BMP280_init();
-    MMC5883_init();
-    L3G4200D_init();
 }
