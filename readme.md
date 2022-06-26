@@ -69,17 +69,18 @@ first AVR project. (feat. [ThePetrovich](https://github.com/ThePetrovich) & [bea
         #include "settings.h"
     ```
 
-- global variables and constants:
-  - ```c++
-    jmp_buf MMC5883MA_jmpbuf;
-    ```
-
-- defines and macros (in settings.h if count of that more than two):
+- defines and macros:
   - ```c++
     ISR(USART0_RX_vect){
         printf("%c",UDR0);
     }
     ```
+
+- global variables and constants:
+  - ```c++
+    jmp_buf MMC5883MA_jmpbuf;
+    ```
+    
 - and other things..:
   - ```c++
     int main(){
