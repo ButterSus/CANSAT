@@ -28,9 +28,14 @@ int putc1(char data, FILE*){
 void setup(){
     CLEAR;
 
-    /*! UART */
+    /*! UART 1 */
     DDRE &= ~(1<<PE0); /*! 32 - RX0  (READ)   */
     DDRE |=  (1<<PE1); /*! 33 - TX0  (WRITE)  */
+
+    /*! UART 2 */
+    PORTE &= ~(1<<PD2);
+    PORTE |= (1<<PD3);
+
     DDRE !=  (1<<PE2); /*! 34 - XCK0 (USELESS)*/
     DDRE |=  (1<<PE3); /*! 35 - OC3A (WRITE)  */
     DDRE |=  (1<<PE4); /*! 36 - 0C3B (WRITE)  */
@@ -49,6 +54,7 @@ void setup(){
     DDRB |=  (1<<PB5); /*! 13 - BMP280        */
     DDRB |=  (1<<PB6); /*! 14 - NRF24L01 CE   */ /*! RADIO    */
     DDRB |=  (1<<PB7); /*! 15 - NRF24L01 CSN  */ /*! NRF24L01 */
+    DDRD |= (1<<PD4);
 
     /*! I2C */
     DDRD &= ~(1<<PD0); /*! 25 - SCL   (READ)  */
