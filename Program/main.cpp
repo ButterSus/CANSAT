@@ -6,6 +6,7 @@
 void setup();
 
 int main(){
+    asm volatile("sei");
     setup();
     while(1);
 }

@@ -39,7 +39,7 @@ void main2(){
     }
 }
 
-void setup(){
+volatile void setup(){
     CLEAR;
 
     /*! UART 1 */
@@ -81,5 +81,7 @@ void setup(){
     interfaceUART0 << "test" << endl;
     Thread(main1, 100);
     Thread(main2, 100);
-    TIMER0(100);
+    TIMER0 interfaceTimer0 = TIMER0(100);
+    asm volatile("sei");
+    interfaceTimer0.enable();
 }
