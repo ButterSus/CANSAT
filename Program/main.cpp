@@ -4,11 +4,8 @@
  */
 
 void setup();
-void update();
 
 int main(){
     setup();
-    while(true){
-        update();
-    }
+    while(1);
 }

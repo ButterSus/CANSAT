@@ -26,11 +26,15 @@
 #define ub4b(a, b) uint32_t(((uint32_t)(b) << 16) | (uint32_t)(a))
 
 #define jmpStack(x) asm volatile("out %[_SPL], %A[_MEM]\r\nout %[_SPH], %B[_MEM]\r\n"::[_SPL]"i"(_SFR_IO_ADDR(SPL)),\
-[_SPH]"i"(_SFR_IO_ADDR(SPH)),[_MEM]"r"(x + sizeof(x)))
+[_SPH]"i"(_SFR_IO_ADDR(SPH)),[_MEM]"r"((uint16_t)(x)))
 #define low(x) (x & 0xFF)
 #define high(x) ((x >> 8) & 0xFF)
 #define pass asm volatile("nop")
 #define swap(x) asm volatile("swap %[a]" : [a]"=&r"(x) : "[a]"(x))
+#define push8(x) asm volatile("push %[a]" : [a]"=&r"(x) : "[a]"(x))
+#define push16(x) asm volatile("push %A[a]\r\npush %B[a]" : [a]"=&r"(x) : "[a]"(x))
+#define pop8(x) asm volatile("pop %[a]" :: [a]"r"(x))
+#define pop16(x) asm volatile("pop %A[a]"\r\npop %B[a] :: [a]"r"(x))
 #define call asm volatile("call _next_%=\r\n_next_%=:")
 #define ret asm volatile("ret")
 #define pushRegisters asm volatile("push r31\n\tpush r30\n\tpush r29\n\tpush r28\n\tpush r27\n\tpush r25\n\tpush r24\n\t"\

@@ -3,6 +3,8 @@
  * @date June 2022
  */
 
+#include "RTOS/RTOS.h"
+#include "TIMER0.h"
 #include "UART.h"
 #include "I2C.h"
 
@@ -25,6 +27,18 @@ int putc1(char data, FILE*){
     return 0;
 }
 
+void main1(){
+    while (1){
+        interfaceUART0 << "hello furlaries!" << endl;
+    }
+}
+
+void main2(){
+    while (2){
+        interfaceUART0 << "engineer gaming!" << endl;
+    }
+}
+
 void setup(){
     CLEAR;
 
@@ -36,6 +50,7 @@ void setup(){
     PORTE &= ~(1<<PD2);
     PORTE |= (1<<PD3);
 
+    /*! ANOTHER */
     DDRE !=  (1<<PE2); /*! 34 - XCK0 (USELESS)*/
     DDRE |=  (1<<PE3); /*! 35 - OC3A (WRITE)  */
     DDRE |=  (1<<PE4); /*! 36 - 0C3B (WRITE)  */
@@ -62,5 +77,9 @@ void setup(){
 
     interfaceUART0 = UART(putc0, &UCSR0A, &UCSR0B, &UCSR0C, &UBRR0H, &UBRR0L);
     interfaceUART1 = UART(putc1, &UCSR1A, &UCSR1B, &UCSR1C, &UBRR1H, &UBRR1L);
-    interfaceI2C = I2C(overloaded());
+    //interfaceI2C = I2C(overloaded());
+    interfaceUART0 << "test" << endl;
+    Thread(main1, 100);
+    Thread(main2, 100);
+    TIMER0(100);
 }

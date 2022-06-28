@@ -33,7 +33,6 @@ include_directories(../CANSAT)
 include_directories(Drivers/include)
 include_directories(Functions/include)
 include_directories(Interface/include)
-include_directories(RTOS/include)
 
 add_executable(CANSAT Program/main.cpp
         Interface/include/UART.h
@@ -57,7 +56,7 @@ add_executable(CANSAT Program/main.cpp
         Drivers/source/L3G4200D.cpp
         Drivers/include/L3G4200D.h
 
-        RTOS/tools.h
-        RTOS/include/RTOS.h Program/setup.cpp Program/update.cpp)
+        RTOS/include/tools.h
+        RTOS/RTOS.h Program/setup.cpp Program/update.cpp RTOS/source/thread.cpp RTOS/include/thread.h RTOS/source/tools.cpp Drivers/include/TIMER0.h Drivers/source/TIMER0.cpp)
 
 target_link_libraries(CANSAT -lm -lprintf_flt)

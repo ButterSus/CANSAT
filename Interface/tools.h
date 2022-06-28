@@ -12,6 +12,6 @@
 
 typedef struct{}overloaded;
 
-#include "RTOS.h"
+#include "RTOS/RTOS.h"
 
 #endif //CANSAT_INTERFACE_TOOLS_H
