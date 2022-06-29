@@ -7,6 +7,7 @@
 
 TIMER0::TIMER0(int Hz)
 {
+    interfaceTimer0.disable();
     if(Hz<31) Hz=31;
     TCCR0 &=~(0x07);
     switch(Hz){
@@ -46,6 +47,7 @@ TIMER0::TIMER0(int Hz)
             break;
         }
     }
+    TIFR = (1 << OCF0);
 }
 
 void TIMER0::enable()

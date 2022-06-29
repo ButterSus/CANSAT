@@ -13,7 +13,7 @@
 #define MEMORY_SIZE 1024
 #endif // _THREAD_
 
-typedef void* stack;
+typedef volatile void* stack;
 
 class Thread {
 private:

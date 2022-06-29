@@ -37,7 +37,7 @@
 #define pop16(x) asm volatile("pop %A[a]"\r\npop %B[a] :: [a]"r"(x))
 #define call asm volatile("call _next_%=\r\n_next_%=:")
 #define ret asm volatile("ret")
-#define pushRegisters asm volatile("push r31\n\tpush r30\n\tpush r29\n\tpush r28\n\tpush r27\n\tpush r25\n\tpush r24\n\t"\
+#define pushRegisters asm volatile("push r31\n\tpush r30\n\tpush r29\n\tpush r28\n\tpush r27\n\tpush r26\n\tpush r25\n\tpush r24\n\t"\
 "push r23\n\tpush r22\n\tpush r21\n\tpush r20\n\tpush r19\n\tpush r18\n\tpush r17\n\tpush r16\n\tpush r15\n\t"\
 "push r14\n\tpush r13\n\tpush r12\n\tpush r11\n\tpush r10\n\tpush r9\n\tpush r8\n\tpush r7\n\tpush r6\n\tpush r5\n\t"\
 "push r4\n\tpush r3\n\tpush r2\n\tpush r1\n\tpush r0")

@@ -7,10 +7,12 @@
 
 #include "RTOS/include/thread.h"
 #include "RTOS/include/tools.h"
+#include "TIMER0.h"
 
-uint8_t taskCounter = 0, taskPoint = 0;
-uint8_t memory[MEMORY_SIZE];
-uint16_t memoryUsed = 0;
+volatile uint8_t taskCounter = 0;
+volatile uint32_t taskPoint = 0;
+volatile uint8_t memory[MEMORY_SIZE];
+volatile uint16_t memoryUsed = 0;
 
 stack stackPointers[8];
 
@@ -26,10 +28,16 @@ Thread::Thread(void (*gotoFunction)(), int stackSize)
 
 ISR(TIMER0_COMP_vect, ISR_NAKED)
 {
+    cli();
     push8(SREG);
     pushRegisters;
+    stackPointers[(taskPoint - 1) % taskCounter] = (stack)SP;
     jmpStack(stackPointers[(taskPoint++) % taskCounter]);
     popRegisters;
     pop8(SREG);
+    sei();
+    asm volatile(
+            "clr r1"
+            );
     reti();
 }

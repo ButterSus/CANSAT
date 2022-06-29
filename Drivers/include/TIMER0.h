@@ -16,4 +16,6 @@ public:
     void disable();
 };
 
+extern TIMER0 interfaceTimer0;
+
 #endif //CANSAT_TIMER0_H

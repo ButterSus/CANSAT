@@ -18,11 +18,12 @@ private:
 public:
     UART() = default;
     UART(int (*putc)(char, FILE *), volatile uint8_t*UCSRnA, volatile uint8_t*UCSRnB, volatile uint8_t*UCSRnC,
-         volatile uint8_t*UBRRnH, volatile uint8_t*UBRRnL);
+         volatile uint8_t*UBRRnH, volatile uint8_t*UBRRnL, FILE*FILE_buffer);
     UART &operator << (char*value);
     UART &operator << (const char*value);
     UART &operator << (float value);
     UART &operator << (double value);
+    UART &operator << (int value);
 
     template<typename type>
     UART &operator << (type value);

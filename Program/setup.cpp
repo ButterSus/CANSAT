@@ -14,30 +14,43 @@
 UART interfaceUART0;
 UART interfaceUART1;
 I2C interfaceI2C;
+extern uint32_t taskPoint;
 
 int putc0(char data, FILE*){
     while(!(UCSR0A & (1<<UDRE0)));
+    interfaceTimer0.disable();
     UDR0 = data;
+    interfaceTimer0.enable();
     return 0;
 }
 
 int putc1(char data, FILE*){
     while(!(UCSR1A & (1<<UDRE1)));
+    interfaceTimer0.disable();
     UDR1 = data;
+    interfaceTimer0.enable();
     return 0;
 }
 
 void main1(){
+    sei();
     while (1){
-        interfaceUART0 << "hello furlaries!" << endl;
+        PORTG |= (1 << PG3);
+        interfaceUART0 << "hello furlaries!" << " " << (int)SP << " " << (int)taskPoint << endl;
     }
 }
 
 void main2(){
-    while (2){
-        interfaceUART0 << "engineer gaming!" << endl;
+    sei();
+    while (1){
+        PORTG &=~(1 << PG3);
+        interfaceUART0 << "hallo guys!" << " " << (int)SP << " " << (int)taskPoint << endl;
     }
 }
+
+TIMER0 interfaceTimer0;
+FILE UART_buf0;
+FILE UART_buf1;
 
 volatile void setup(){
     CLEAR;
@@ -75,13 +88,15 @@ volatile void setup(){
     DDRD &= ~(1<<PD0); /*! 25 - SCL   (READ)  */
     DDRD &= ~(1<<PD1); /*! 26 - SDA   (READ)  */
 
-    interfaceUART0 = UART(putc0, &UCSR0A, &UCSR0B, &UCSR0C, &UBRR0H, &UBRR0L);
-    interfaceUART1 = UART(putc1, &UCSR1A, &UCSR1B, &UCSR1C, &UBRR1H, &UBRR1L);
-    //interfaceI2C = I2C(overloaded());
+    /*! DEBUG */
+    DDRG |=  (1<<PG3);
+
+    interfaceUART0 = UART(putc0, &UCSR0A, &UCSR0B, &UCSR0C, &UBRR0H, &UBRR0L, &UART_buf0);
+    interfaceUART1 = UART(putc1, &UCSR1A, &UCSR1B, &UCSR1C, &UBRR1H, &UBRR1L, &UART_buf1);
     interfaceUART0 << "test" << endl;
     Thread(main1, 100);
     Thread(main2, 100);
-    TIMER0 interfaceTimer0 = TIMER0(100);
+    interfaceTimer0 = TIMER0(100);
     asm volatile("sei");
     interfaceTimer0.enable();
 }
