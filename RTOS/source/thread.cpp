@@ -26,26 +26,22 @@ Thread::Thread(void (*gotoFunction)(), int stackSize)
     stackPointers[taskCounter++] = memory + memoryUsed - sizeof(data);
 }
 
-void Thread::go(TIMER0 timer)
+void Thread::go(TIMER0 interfaceTimer0, void (*function)())
 {
-    timer.enable();
     sei();
-    jmpStack(memory + memoryUsed);
-    while(1);
+    interfaceTimer0.enable();
+    jmpStack(memoryUsed + memoryUsed);
+    asm volatile("ijmp" :: [a]"z"(function));
+    while (1);
 }
 
 ISR(TIMER0_COMP_vect, ISR_NAKED)
 {
-    cli();
     push8(SREG);
     pushRegisters;
     stackPointers[(taskPoint - 1) % taskCounter] = (stack)SP;
     jmpStack(stackPointers[(taskPoint++) % taskCounter]);
     popRegisters;
     pop8(SREG);
-    sei();
-    asm volatile(
-            "clr r1"
-            );
     reti();
 }

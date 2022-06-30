@@ -12,7 +12,7 @@
 #define MEMORY_SIZE 1024
 #endif // _THREAD_
 
-typedef volatile void* stack;
+typedef volatile void*stack;
 
 class Thread {
 private:
@@ -23,7 +23,7 @@ private:
     } data;
 public:
     Thread(void(*gotoFunction)(), int stackSize);
-    static void go(TIMER0 timer);
+    static void go(TIMER0 interfaceTimer0, void(*function)());
 };
 
 #endif //CANSAT_THREAD_H
