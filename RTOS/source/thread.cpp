@@ -10,7 +10,7 @@
 #include "TIMER0.h"
 
 volatile uint8_t taskCounter = 0;
-volatile uint32_t taskPoint = 0;
+volatile uint32_t taskPoint = 1;
 volatile uint8_t memory[MEMORY_SIZE];
 volatile uint16_t memoryUsed = 0;
 
