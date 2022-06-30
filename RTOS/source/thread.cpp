@@ -20,7 +20,7 @@ Thread::Thread(void (*gotoFunction)(), int stackSize)
 {
     memoryUsed += stackSize + sizeof(data);
     stack backPointer = (stack)SP;
-    jmpStack(memory + memoryUsed);
+    jmpStack(memory + memoryUsed - sizeof(data));
     push16(gotoFunction);
     jmpStack(backPointer);
     stackPointers[taskCounter++] = memory + memoryUsed - sizeof(data);
@@ -30,9 +30,10 @@ void Thread::go(TIMER0 interfaceTimer0, void (*function)())
 {
     sei();
     interfaceTimer0.enable();
-    jmpStack(memory + memoryUsed);
-    asm volatile("ijmp" :: "z"(function));
-    while (1);
+    jmpStack(memory + memoryUsed - sizeof(data));
+    popRegisters;
+    pop8(SREG);
+    ret;
 }
 
 ISR(TIMER0_COMP_vect, ISR_NAKED)
