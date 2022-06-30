@@ -10,7 +10,7 @@
 #include "TIMER0.h"
 
 volatile uint8_t taskCounter = 0;
-volatile uint32_t taskPoint = 1;
+volatile int32_t taskPoint = 0;
 volatile uint8_t memory[MEMORY_SIZE];
 volatile uint16_t memoryUsed = 0;
 
@@ -24,6 +24,14 @@ Thread::Thread(void (*gotoFunction)(), int stackSize)
     push16(gotoFunction);
     jmpStack(backPointer);
     stackPointers[taskCounter++] = memory + memoryUsed - sizeof(data);
+}
+
+void Thread::go(TIMER0 timer)
+{
+    timer.enable();
+    sei();
+    jmpStack(memory + memoryUsed);
+    while(1);
 }
 
 ISR(TIMER0_COMP_vect, ISR_NAKED)

@@ -6,8 +6,7 @@
 #ifndef CANSAT_THREAD_H
 #define CANSAT_THREAD_H
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
+#include "TIMER0.h"
 
 #ifdef _THREAD_
 #define MEMORY_SIZE 1024
@@ -24,6 +23,7 @@ private:
     } data;
 public:
     Thread(void(*gotoFunction)(), int stackSize);
+    static void go(TIMER0 timer);
 };
 
 #endif //CANSAT_THREAD_H

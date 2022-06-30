@@ -6,6 +6,7 @@
 #ifndef CANSAT_TIMER0_H
 #define CANSAT_TIMER0_H
 
+#include <avr/interrupt.h>
 #include <avr/io.h>
 
 class TIMER0 {

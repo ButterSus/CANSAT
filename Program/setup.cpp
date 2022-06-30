@@ -33,7 +33,6 @@ int putc1(char data, FILE*){
 }
 
 void main1(){
-    sei();
     while (1){
         PORTG |= (1 << PG3);
         interfaceUART0 << "hello furlaries!" << " " << (int)SP << " " << (int)taskPoint << endl;
@@ -41,7 +40,6 @@ void main1(){
 }
 
 void main2(){
-    sei();
     while (1){
         PORTG &=~(1 << PG3);
         interfaceUART0 << "hallo guys!" << " " << (int)SP << " " << (int)taskPoint << endl;
@@ -93,10 +91,8 @@ volatile void setup(){
 
     interfaceUART0 = UART(putc0, &UCSR0A, &UCSR0B, &UCSR0C, &UBRR0H, &UBRR0L, &UART_buf0);
     interfaceUART1 = UART(putc1, &UCSR1A, &UCSR1B, &UCSR1C, &UBRR1H, &UBRR1L, &UART_buf1);
-    interfaceUART0 << "test" << endl;
     Thread(main1, 100);
     Thread(main2, 100);
     interfaceTimer0 = TIMER0(100);
-    asm volatile("sei");
-    interfaceTimer0.enable();
+    Thread::go(interfaceTimer0);
 }
