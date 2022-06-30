@@ -30,8 +30,8 @@ void Thread::go(TIMER0 interfaceTimer0, void (*function)())
 {
     sei();
     interfaceTimer0.enable();
-    jmpStack(memoryUsed + memoryUsed);
-    asm volatile("ijmp" :: [a]"z"(function));
+    jmpStack(memory + memoryUsed);
+    asm volatile("ijmp" :: "z"(function));
     while (1);
 }
 
