@@ -94,5 +94,6 @@ volatile void setup(){
     Thread(main1, 100);
     Thread(main2, 100);
     interfaceTimer0 = TIMER0(128);
+
     Thread::go(interfaceTimer0, main2);
 }

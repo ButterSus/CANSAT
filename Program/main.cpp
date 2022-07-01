@@ -7,8 +7,8 @@
 
 void setup();
 
+#include <stdio.h>
+
 int main(){
-    DDRG |= (1 << PG3);
-    PORTG |= (1 << PG3);
     setup();
 }

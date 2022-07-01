@@ -18,9 +18,9 @@ stack stackPointers[8];
 
 Thread::Thread(void (*gotoFunction)(), int stackSize)
 {
-    memoryUsed += stackSize + sizeof(data);
+    memoryUsed += stackSize + sizeof(data) - 1;
     stack backPointer = (stack)SP;
-    jmpStack(memory + memoryUsed - sizeof(data));
+    jmpStack(memory + memoryUsed);
     push16(gotoFunction);
     jmpStack(backPointer);
     stackPointers[taskCounter++] = memory + memoryUsed - sizeof(data);
