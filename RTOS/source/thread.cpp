@@ -26,7 +26,7 @@ Thread::Thread(void (*gotoFunction)(), int stackSize)
     stackPointers[taskCounter++] = memory + memoryUsed - sizeof(data);
 }
 
-void Thread::go(TIMER0 interfaceTimer0, void (*function)())
+void Thread::go(TIMER0 interfaceTimer0)
 {
     sei();
     interfaceTimer0.enable();
@@ -38,6 +38,9 @@ void Thread::go(TIMER0 interfaceTimer0, void (*function)())
 
 ISR(TIMER0_COMP_vect, ISR_NAKED)
 {
+    {
+        TCNT0 = 0;
+    }
     push8(SREG);
     pushRegisters;
     stackPointers[(taskPoint - 1) % taskCounter] = (stack)SP;

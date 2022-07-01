@@ -23,7 +23,7 @@ private:
     } data;
 public:
     Thread(void(*gotoFunction)(), int stackSize);
-    static void go(TIMER0 interfaceTimer0, void(*function)());
+    static void go(TIMER0 interfaceTimer0);
 };
 
 #endif //CANSAT_THREAD_H

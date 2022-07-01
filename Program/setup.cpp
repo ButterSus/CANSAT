@@ -34,15 +34,11 @@ int putc1(char data, FILE*){
 
 void main1(){
     while (1){
-        PORTG |= (1 << PG3);
-        interfaceUART0 << "hello furlaries!" << " " << (int)SP << " " << (int)taskPoint << endl;
     }
 }
 
 void main2(){
     while (1){
-        PORTG &=~(1 << PG3);
-        interfaceUART0 << "hallo guys!" << " " << (int)SP << " " << (int)taskPoint << endl;
     }
 }
 
@@ -95,5 +91,5 @@ volatile void setup(){
     Thread(main2, 100);
     interfaceTimer0 = TIMER0(128);
 
-    Thread::go(interfaceTimer0, main2);
+    Thread::go(interfaceTimer0);
 }
