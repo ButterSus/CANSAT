@@ -19,4 +19,7 @@ public:
 
 extern TIMER0 interfaceTimer0;
 
+void safeModeBegin();
+void safeModeEnd();
+
 #endif //CANSAT_TIMER0_H

@@ -11,6 +11,15 @@
 #include <stdio.h>
 
 #define endl "\r\n"
+#define UART_REGISTERS(x) &UCSR ##x ##A, &UCSR ##x ##B, &UCSR ##x ##C, &UBRR ##x ##H, &UBRR ##x ##L
+#define PUTC_REGISTERS(x) (uint8_t*)(&UCSR ##x ##A), (uint8_t)(UDRE ##x), (uint8_t*)(&UDR ##x)
+
+template <volatile uint8_t**UCSRnA, uint8_t UDREn, volatile uint8_t**UDRn>
+int UART_putc(char data, FILE*){
+    while(!(**UCSRnA & (1 << UDREn)));
+    **UDRn = data;
+    return 0;
+}
 
 class UART {
 private:

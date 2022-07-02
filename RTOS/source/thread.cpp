@@ -14,15 +14,17 @@ volatile int32_t taskPoint = 0;
 volatile uint8_t memory[MEMORY_SIZE];
 volatile uint16_t memoryUsed = 0;
 
-stack stackPointers[8];
+stack stackPointers[THREAD_MAX];
+uint8_t callTimes[THREAD_MAX];
 
-Thread::Thread(void (*gotoFunction)(), int stackSize)
+Thread::Thread(void (*gotoFunction)(), int stackSize, uint8_t times)
 {
     memoryUsed += stackSize + sizeof(data) - 1;
     stack backPointer = (stack)SP;
     jmpStack(memory + memoryUsed);
     push16(gotoFunction);
     jmpStack(backPointer);
+    callTimes[taskCounter] = times;
     stackPointers[taskCounter++] = memory + memoryUsed - sizeof(data);
 }
 
@@ -38,13 +40,16 @@ void Thread::go(TIMER0 interfaceTimer0)
 
 ISR(TIMER0_COMP_vect, ISR_NAKED)
 {
-    {
-        TCNT0 = 0;
-    }
+    callTimes[(taskPoint - 1) % taskCounter] -= 1;
     push8(SREG);
     pushRegisters;
     stackPointers[(taskPoint - 1) % taskCounter] = (stack)SP;
-    jmpStack(stackPointers[(taskPoint++) % taskCounter]);
+    {
+        TCNT0 = 0;
+        if (not callTimes[(taskPoint - 1) % taskCounter]){
+            jmpStack(stackPointers[(taskPoint++) % taskCounter]);
+        }
+    }
     popRegisters;
     pop8(SREG);
     reti();

@@ -9,7 +9,8 @@
 #include "TIMER0.h"
 
 #ifdef _THREAD_
-#define MEMORY_SIZE 1024
+#define MEMORY_SIZE 2048
+#define THREAD_MAX 8
 #endif // _THREAD_
 
 typedef volatile void*stack;
@@ -22,7 +23,7 @@ private:
         uint8_t registers[32];
     } data;
 public:
-    Thread(void(*gotoFunction)(), int stackSize);
+    Thread(void(*gotoFunction)(), int stackSize, uint8_t times);
     static void go(TIMER0 interfaceTimer0);
 };
 
