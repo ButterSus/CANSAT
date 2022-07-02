@@ -55,28 +55,6 @@ void TIMER0::enable()
     TIMSK |= (1<<OCIE0);
 }
 
-void TIMER0::disable()
-{
+void TIMER0::disable() {
     TIMSK &= ~(1<<OCIE0);
-}
-
-int safeModeCounter;
-
-void safeModeBegin()
-{
-    interfaceTimer0.disable();
-    if(not safeModeCounter++)
-    {
-        interfaceTimer0.enable();
-    }
-}
-
-void safeModeEnd()
-{
-    interfaceTimer0.disable();
-    if(not --safeModeCounter)
-    {
-        interfaceTimer0.disable();
-    }
-    else interfaceTimer0.enable();
 }

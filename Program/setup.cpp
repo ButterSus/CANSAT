@@ -11,22 +11,38 @@
 #define CLEAR DDRA = 0; DDRB = 0; DDRC = 0; DDRD = 0; DDRE = 0; DDRF = 0; DDRG = 0; \
         PORTA = 0; PORTB = 0; PORTC = 0; PORTD = 0; PORTE = 0; PORTF = 0; PORTG = 0
 
+UART interfaceUART0;
+UART interfaceUART1;
+I2C interfaceI2C;
+extern uint32_t taskPoint;
+
+int putc0(char data, FILE*){
+    while(!(UCSR0A & (1<<UDRE0)));
+    interfaceTimer0.disable();
+    UDR0 = data;
+    interfaceTimer0.enable();
+    return 0;
+}
+
+int putc1(char data, FILE*){
+    while(!(UCSR1A & (1<<UDRE1)));
+    interfaceTimer0.disable();
+    UDR1 = data;
+    interfaceTimer0.enable();
+    return 0;
+}
+
 void main1(){
-    while(1){
-        interfaceUART0 << "hello furlaries!" << endl;
+    while (1){
     }
 }
 
 void main2(){
-    while(1){
-        interfaceUART1 << "cringe" << endl;
+    while (1){
     }
 }
 
-I2C interfaceI2C;
 TIMER0 interfaceTimer0;
-UART interfaceUART0;
-UART interfaceUART1;
 FILE UART_buf0;
 FILE UART_buf1;
 
@@ -69,17 +85,11 @@ volatile void setup(){
     /*! DEBUG */
     DDRG |=  (1<<PG3);
 
-    static volatile uint8_t*lUCSR0A = &UCSR0A,
-                           *lUDR0 = &UDR0;
-    auto p = &UART_putc<&lUCSR0A, UDRE0, &lUDR0>(char('0'), (FILE*)(nullptr));
-    interfaceUART0 = UART(p,
-            &UCSR0A,
-            &UCSR0B,
-            &UCSR0C,
-            &UBRR0H,
-            &UBRR0L,
-            &UART_buf0);
+    interfaceUART0 = UART(putc0, &UCSR0A, &UCSR0B, &UCSR0C, &UBRR0H, &UBRR0L, &UART_buf0);
+    interfaceUART1 = UART(putc1, &UCSR1A, &UCSR1B, &UCSR1C, &UBRR1H, &UBRR1L, &UART_buf1);
+    Thread(main1, 100);
+    Thread(main2, 100);
+    interfaceTimer0 = TIMER0(128);
 
-    Thread(main1, 256, 3);
-    Thread(main2, 256, 3).go(TIMER0(256));
+    Thread::go(interfaceTimer0);
 }
