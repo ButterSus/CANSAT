@@ -87,9 +87,4 @@ volatile void setup(){
 
     interfaceUART0 = UART(putc0, &UCSR0A, &UCSR0B, &UCSR0C, &UBRR0H, &UBRR0L, &UART_buf0);
     interfaceUART1 = UART(putc1, &UCSR1A, &UCSR1B, &UCSR1C, &UBRR1H, &UBRR1L, &UART_buf1);
-    Thread(main1, 100);
-    Thread(main2, 100);
-    interfaceTimer0 = TIMER0(128);
-
-    Thread::go(interfaceTimer0);
 }

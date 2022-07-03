@@ -7,6 +7,15 @@
 #define CANSAT_TOOLS_H
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+#include <stdlib.h>
+
+/*! s */
+template <typename type>
+type bisect(type array[], int start, int end = 3){
+    bisect(array, 4);
+}
 
 /*! signed two bytes into one short in Little Endian */
 #define sb2l(b, a) int16_t(((uint16_t)(b) << 8) | (uint16_t)(a))

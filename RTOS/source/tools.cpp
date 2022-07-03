@@ -4,5 +4,3 @@
  */
 
 #include "RTOS/include/tools.h"
-
-
